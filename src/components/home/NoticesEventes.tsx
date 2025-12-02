@@ -8,7 +8,7 @@ interface NoticesEventesProps {
 }
 
 export default function NoticesEventes({ data, title }: NoticesEventesProps) {
-    console.log(data)
+    
     const marqueeRef = useRef<HTMLDivElement | null>(null);
     if (!data) return null;
 

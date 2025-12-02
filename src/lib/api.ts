@@ -6,6 +6,9 @@ export const API_URL = {
     },
     NOTICE: {
         ALL: `${BASE_URL}/notice/api/v1/notice/all`
+    },
+    TEAM: {
+        ALL: `${BASE_URL}/team/api/v1/team/all/?page=1&size=500`,
     }
 
 }
