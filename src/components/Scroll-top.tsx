@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { IoIosArrowUp } from 'react-icons/io';
 
 export default function ScrollTop() {
-    const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         const toggleVisibility = () => {
@@ -33,8 +33,10 @@ export default function ScrollTop() {
 
     return (
         <div className='fixed bottom-4 right-4'>
-            <button className='rouded-full bg-purple-600 hover:bg-purple-400 rounded cursor-pointer text-white p-2 hadow-lg transition-colors duration-300'>
-                <IoIosArrowUp size={24}/>
+            <button className='rouded-full bg-purple-600 hover:bg-purple-400 rounded cursor-pointer text-white p-2 hadow-lg transition-colors duration-300'
+                onClick={scrollToTop}
+                aria-label="Scroll to top">
+                <IoIosArrowUp size={24} />
             </button>
         </div>
     )
