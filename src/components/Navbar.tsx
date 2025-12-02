@@ -14,6 +14,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 
 const companies = [
     { name: "Munia Overseas (RL-2452)", href: "/companies/munia-overseas" },
@@ -31,6 +32,7 @@ const companies = [
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isCompaniesOpen, setIsCompaniesOpen] = useState(false)
     const pathName = usePathname();
 
     // function to determine is current path is active
@@ -41,6 +43,7 @@ export default function Navbar() {
     const isCompanyActive = () => {
         return pathName?.startsWith("/companies/");
     }
+
 
     return (
         <header className='bg-white sticky top-0 z-50'>
@@ -149,10 +152,34 @@ export default function Navbar() {
                                 href='/services' active={isActive("/services")}>
                                 SERVICES
                             </NavLink>
-                            <NavLink
-                                href='/our-business' active={isActive("/our-business")}>
-                                OUR BUSINESS
-                            </NavLink>
+
+                            {/* dropdown section for our business */}
+                            <div>
+                                <button
+                                    onClick={() => setIsCompaniesOpen
+                                        (!isCompaniesOpen)}
+                                    className='flex gap-4 items-center px-3 py-2 text-sm text-gray-700'
+                                >
+                                    <span>OUR BUSINESS</span>
+                                    {isCompaniesOpen ?
+                                        <IoIosArrowDown />
+                                        :
+                                        <IoIosArrowUp />}
+                                </button>
+
+                                {/* collapsible links */}
+                                {isCompaniesOpen &&
+                                    <div className='pl-4 mt-1 border-l-2 space-y-2 border-gray-200 flex flex-col'>
+                                        {companies.map(company => <NavLink
+                                            key={company.href}
+                                            href={company.href}
+                                            active={isActive(company.href)}
+                                            onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                                            {company.name}
+                                        </NavLink>)}
+                                    </div>}
+                            </div>
+
                             <NavLink
                                 href='/our-terms' active={isActive("/our-terms")}>
                                 OUR TEAMS
@@ -200,7 +227,7 @@ function NavDropdown({ title, items, active = false }: NavDropdownProps) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator /> */}
+                     */}
                     {items.map(item => <DropdownMenuItem asChild
                         key={item.href}>
                         <Link href={item.href} className='w-full py-2 px-3 text-base hover:text- cursor-pointer'>
