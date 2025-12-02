@@ -1,11 +1,33 @@
 'use client'
 
-import { NavLinkProps } from '@/types'
+import { NavDropdownProps, NavLinkProps } from '@/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from "lucide-react";
 import { useState } from 'react'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+const companies = [
+    { name: "Munia Overseas (RL-2452)", href: "/companies/munia-overseas" },
+    {
+        name: "MSTC Training center",
+        href: "/companies/singapore-technical-training-centre",
+    },
+    {
+        name: "Monir Air Tours & Travels",
+        href: "/companies/monir-air-tours-travels",
+    },
+    { name: "Ms Construction", href: "/companies/ms-construction" },
+    { name: "Singapore Housing Ltd", href: "/companies/singapore-housing-ltd" },
+];
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -14,6 +36,10 @@ export default function Navbar() {
     // function to determine is current path is active
     const isActive = (path: string): boolean => {
         return pathName === path;
+    }
+
+    const isCompanyActive = () => {
+        return pathName?.startsWith("/companies/");
     }
 
     return (
@@ -59,10 +85,11 @@ export default function Navbar() {
                             href='/services' active={isActive("/services")}>
                             SERVICES
                         </NavLink>
-                        <NavLink
-                            href='/our-business' active={isActive("/our-business")}>
-                            OUR BUSINESS
-                        </NavLink>
+                        <NavDropdown
+                            title="OUR BUSINESS"
+                            active={isCompanyActive()}
+                            items={companies}
+                        />
                         <NavLink
                             href='/our-terms' active={isActive("/our-terms")}>
                             OUR TEAMS
@@ -89,17 +116,17 @@ export default function Navbar() {
                     <div className='container mx-auto p-4'>
                         <nav className='flex flex-col space-y-4'>
                             <NavLink
-                                href='/' 
+                                href='/'
                                 active={isActive("/")}
-                                onClick={()=> setIsMenuOpen(false)}
-                                >
+                                onClick={() => setIsMenuOpen(false)}
+                            >
                                 HOME
                             </NavLink>
                             <NavLink
-                                href='/about' 
+                                href='/about'
                                 active={isActive("/about")}
-                                onClick={()=> setIsMenuOpen(false)}
-                                >
+                                onClick={() => setIsMenuOpen(false)}
+                            >
                                 ABOUT
                             </NavLink>
                             <NavLink
@@ -153,9 +180,35 @@ function NavLink({
         <Link
             href={href}
             onClick={onClick}
-            className={`px-3 py-2 text-sm
-            ${active ? "text-violet-900" : "text-gray-700 "} hover:text-violet-400 hover:text-lg duration-300`}>
+            className={`px-3 py-2 text-sm font-semiboldz
+            ${active ? "text-violet-900" : "text-gray-700 "} hover:text-violet-600`}>
             {children}
         </Link >
+    )
+}
+
+// navlink dropdown custom component
+function NavDropdown({ title, items, active = false }: NavDropdownProps) {
+    return (
+        <div className='bg-white'>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <button className={`px-3 py-2 text-sm cursor-pointer
+                        ${active ? "text-violet-900" : "text-gray-700 "} hover:text-violet-600`}>
+                        {title}
+                    </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator /> */}
+                    {items.map(item => <DropdownMenuItem asChild
+                        key={item.href}>
+                        <Link href={item.href} className='w-full py-2 px-3 text-base hover:text- cursor-pointer'>
+                            {item.name}
+                        </Link>
+                    </DropdownMenuItem>)}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
     )
 }
